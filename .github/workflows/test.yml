@@ -20,4 +20,4 @@ jobs:
         uses: Mitigram/gh-action-gitreset@main
         with:
           destination: test
-          dry-run: "true"
+          dry-run: "false"
