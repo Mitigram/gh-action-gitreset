@@ -1,0 +1,23 @@
+name: Excercise Action
+
+on:
+  push:
+    branches:
+      - main
+
+
+jobs:
+  reset:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      -
+        name: Reset 'test'
+        uses: Mitigram/gh-action-gitreset@main
+        with:
+          destination: test
+          dry-run: "true"
