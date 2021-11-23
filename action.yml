@@ -19,7 +19,7 @@ inputs:
       Name of the source branch, defaults to the default branch for the current
       repository.
     required: true
-    default: "${{ github.repository.default_branch }}"
+    default: "${{ github.event.repository.default_branch }}"
 
   destination:
     description: |
