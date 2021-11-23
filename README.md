@@ -24,3 +24,14 @@ workflow.
   [context]: https://docs.github.com/en/actions/learn-github-actions/contexts#github-context
   [schedule]: https://docs.github.com/en/actions/learn-github-actions/workflow-syntax-for-github-actions#onschedule
   [checkout]: https://github.com/actions/checkout
+
+## Testing
+
+This action tests itself through a branch called `test`. Everytime a change is
+brought into the `main` branch, a workflow will run the action (with the `@main`
+reference to guarantee that the same version is being run) and force the changes
+onto the branch called `test`. Once changes have been forced, the GitHub UI for
+[comparisons] should show that there are no differences between `main` and
+`test`.
+
+  [comparisons]: https://github.com/Mitigram/gh-action-gitreset/compare/test?expand=1
