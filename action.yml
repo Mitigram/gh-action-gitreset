@@ -1,0 +1,57 @@
+name: git reset
+description: |
+  Will '--hard' reset a branch to the content of another branch and '--force'
+  push it to the origin. By default, the source branch will be the default
+  branch at GitHub and the destination branch the branch where this action is
+  run from. Note that orphane workflows, e.g. when run from a 'schedule' are
+  anchored to the default branch.
+
+  This action supposes that you have already a local copy of the repository,
+  i.e. that you already have run `actions/checkout@v2` at a prior step.
+author: Emmanuel Frecon <emmanuel.frecon@mitigram.com>
+branding:
+  icon: delete
+  color: red
+
+inputs:
+  source:
+    description: |
+      Name of the source branch, defaults to the default branch for the current
+      repository.
+    required: true
+    default: "${{ github.repository.default_branch }}"
+
+  destination:
+    description: |
+      Name of the destination branch which content will be overriden with the
+      content of the source branch. Default to the branch where this action is
+      run in.
+    required: true
+    default: "${{ github.ref_name }}"
+
+  dry-run:
+    description: |
+      when set to false, this will prevent force pushing the reseted branch,
+      instead a message will be printed out.
+    default: "false"
+    required: true
+
+runs:
+  using: composite
+  steps:
+    -
+      name: reset ${{ inputs.destination }} branch
+      id: reset
+      shell: bash
+      run: |
+        if [ "${{ inputs.source }}" = "${{ inputs.destination }}" ]; then
+          echo "Source and destination branches are identical, e.g. '${{ inputs.source }}'!"
+        else
+          git checkout ${{ inputs.destination }}
+          git reset --hard origin/${{ inputs.source }}
+          if ${{ inputs.dry-run }}; then
+            echo "Would force push reseted content from ${{ inputs.source }} to origin/${{ inputs.destination }}"
+          else
+            git push --force origin ${{ inputs.destination }}
+          fi
+        fi
