@@ -34,7 +34,7 @@ inputs:
       when set to false, this will prevent force pushing the reseted branch,
       instead a message will be printed out.
     default: "false"
-    required: true
+    required: false
 
 runs:
   using: composite
